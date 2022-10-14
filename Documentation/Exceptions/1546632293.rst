@@ -35,3 +35,25 @@ Add explicitly a default value:
    protected ?Cart $cart = null;
    
 `Read more information on this behaviour <https://blog.reelworx.at/detail/typo3-extbase-and-type-annotations-with-php-74/>`__.
+
+TYPO3 11.5.16 - 2022-10-14
+==========================
+
+For properties of type `ObjectStorage` it is required to initialize the default value of the property as following:
+
+::
+
+    protected ObjectStorage $comments;
+
+    public function __construct()
+    {
+        $this->initializeObject();
+    }
+
+    /**
+     * Called again with initialize object, as fetching an entity from the DB does not use the constructor
+     */
+    protected function initializeObject(): void
+    {
+        $this->comments = $this->comments ?? new ObjectStorage();
+    }
